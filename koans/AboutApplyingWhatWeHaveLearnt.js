@@ -32,7 +32,7 @@ describe("About Applying What We Have Learnt", function() {
         }
     }
 
-    expect(productsICanEat.length).toBe(FILL_ME_IN);
+    expect(productsICanEat.length).toBe(1);
   });
 
   it("given I'm allergic to nuts and hate mushrooms, it should find a pizza I can eat (functional)", function () {
@@ -41,7 +41,24 @@ describe("About Applying What We Have Learnt", function() {
 
       /* solve using filter() & all() / any() */
 
-      expect(productsICanEat.length).toBe(FILL_ME_IN);
+      // Return pizza offerings matching the preferences of a customer according to their dislikes (unordered array) and
+      // whether they have a nut allergy (bool).  Note that the use of includes is browser dependent and could be replaced
+      // by any if needed, but includes is much more readable.
+      function accommodateCustomer(dislikes, nutAllergy)
+      {
+        return _(products)
+          .filter(function (product) { return (!nutAllergy || !product.containsNuts); })
+          .filter(function (product) { 
+            return _(dislikes).any(function (dislikedIngredient) {
+              return !product.ingredients.includes(dislikedIngredient);
+            })
+          });
+      }
+      productsICanEat = accommodateCustomer(["mushrooms"], true);
+      expect(productsICanEat.length).toBe(1);
+
+      productsICanEat = accommodateCustomer(["blue cheese", "sesame seeds"], false);
+      expect(productsICanEat.length).toBe(5);
   });
 
   /*********************************************************************************/
@@ -55,7 +72,7 @@ describe("About Applying What We Have Learnt", function() {
       }
     }
 
-    expect(sum).toBe(FILL_ME_IN);
+    expect(sum).toBe(233168);
   });
 
   it("should add all the natural numbers below 1000 that are multiples of 3 or 5 (functional)", function () {
